@@ -7,6 +7,8 @@ use ::std::str::Chars;
  The next method reads the characters in the expression and returns the next token
 */
 
+#[derive(Clone)]
+#[derive(Debug)]
 pub struct Tokenizer<'a> {
     expr: Peekable<Chars<'a>>,
 }
