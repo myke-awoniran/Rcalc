@@ -5,21 +5,22 @@ use super::ast::Node;
 use super::token::OperatorPrecedence;
 use super::token::Token;
 use super::tokenizer::Tokenizer;
+use std::fmt;
 
 #[derive(Debug)]
-enum ParseError {
+pub enum ParseError {
     UnAbleToParse(String),
     InvalidOperator(String),
 }
 
 #[derive(Clone, Debug)]
-struct Parser<'a> {
+pub struct Parser<'a> {
     tokenizer: Tokenizer<'a>,
     current_token: Token,
 }
 
 impl<'a> Parser<'a> {
-    pub fn new(&self, expr: &'a str) -> Result<Self, ParseError> {
+    pub fn new(expr: &'a str) -> Result<Self, ParseError> {
         let mut lexer = Tokenizer::new(expr);
         let current_token = match lexer.next() {
             Some(token) => token,
@@ -147,5 +148,20 @@ impl<'a> Parser<'a> {
         };
         self.current_token = next_token;
         Ok(())
+    }
+}
+
+impl fmt::Display for ParseError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match &self {
+            self::ParseError::InvalidOperator(e) => write!(f, "Error in evaluating {}", e),
+            self::ParseError::UnAbleToParse(e) => write!(f, "Error in evaluating{}", e),
+        }
+    }
+}
+
+impl std::convert::From<std::boxed::Box<dyn std::error::Error>> for ParseError {
+    fn from(err: std::boxed::Box<dyn std::error::Error>) -> Self {
+        ParseError::UnAbleToParse("unable to parse".into())
     }
 }

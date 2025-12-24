@@ -1,5 +1,6 @@
 use std::error;
 
+#[derive(Debug)]
 pub enum Node {
     Add(Box<Node>, Box<Node>),
     Number(f64),
