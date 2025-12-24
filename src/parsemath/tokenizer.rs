@@ -37,7 +37,7 @@ impl<'a> Iterator for Tokenizer<'a> {
                         break;
                     }
                 }
-                Some(Token::Num(digit.parse().unwrap()))
+                Some(Token::Num(digit.parse::<f64>().unwrap()))
             }
             Some('+') => Some(Token::Add),
             Some('-') => Some(Token::Subtract),
