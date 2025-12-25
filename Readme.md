@@ -1,4 +1,4 @@
-# Rcal — Rust CLI Arithmetic Expression Evaluator
+# Rcal::Rust CLI Arithmetic Expression Evaluator
 
 Rcal is a **command-line arithmetic expression evaluator written in Rust**.  
 It parses and evaluates mathematical expressions provided as free-form text, enforcing correct **operator precedence**,
