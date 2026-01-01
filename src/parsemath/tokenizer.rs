@@ -39,7 +39,8 @@ impl<'a> Iterator for Tokenizer<'a> {
                         break;
                     }
                 }
-                Some(Token::Num(digit.parse::<f64>().unwrap()))
+                let num = digit.parse::<f64>().ok()?;
+                Some(Token::Num(num))
             }
             Some('+') => Some(Token::Add),
             Some('-') => Some(Token::Subtract),
@@ -64,15 +65,22 @@ mod tests {
         let mut tokenizer = Tokenizer::new("34");
         assert_eq!(tokenizer.next().unwrap(), Token::Num(34.0))
     }
+
     #[test]
     fn test_decimal_number() {
         let mut tokenizer = Tokenizer::new("34.5");
         assert_eq!(tokenizer.next().unwrap(), Token::Num(34.5))
     }
+
     #[test]
-    #[ignore]
+    fn test_invalid_decimal_number() {
+        let mut tokenizer = Tokenizer::new("34.5.6");
+        assert_eq!(tokenizer.next(), None)
+    }
+
+    #[test]
     fn test_invalid_char() {
         let mut tokenizer = Tokenizer::new("#$%");
-        assert_eq!(tokenizer.next().unwrap(), Token::Num(34.5));
+        assert_eq!(tokenizer.next(), None);
     }
 }
